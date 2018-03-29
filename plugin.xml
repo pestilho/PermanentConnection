@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    id="com-pestilho-permanentconnection"
+    version="1.0.0">
+    <name>Cordova Permanent Connection</name>
+    <description>Cordova plugin for background file download. Plugin allow you to keep download connection through interrupt events like internet breakdown, app crashes, app background mode etc. [ Android, IOS ]</description>
+    <license>MIT</license>
+    <keywords>cordova phonegap plugin PRDownloader HWIFileDownload android ios ionic</keywords>
+    <repo>https://github.com/pestilho/PermanentConnection.git</repo>
+    <issue>https://github.com/pestilho/PermanentConnection.git/issues</issue>
+
+    <!-- android -->
+    <platform name="android">
+      <js-module src="www/plugin.js" name="plugin">
+        <runs/>
+
+        <!-- This is the window variable name you want, like window.MyCordovaPlugin -->
+        <clobbers target="PermanentConnection" />
+      </js-module>
+      <config-file target="res/xml/config.xml" parent="/*">
+        <feature name="PermanentConnection">
+          <param name="android-package" value="com.pestilho.permanentconnection.PermanentConnection" />
+          <param name="onload" value="true" />
+        </feature>
+      </config-file>
+
+      <!-- core -->
+      <source-file src="src/android/com/prdownloader/core/Core.java" target-dir="src/com/prdownloader/core" />
+      <source-file src="src/android/com/prdownloader/core/DefaultExecutorSupplier.java" target-dir="src/com/prdownloader/core" />
+      <source-file src="src/android/com/prdownloader/core/DownloadExecutor.java" target-dir="src/com/prdownloader/core" />
+      <source-file src="src/android/com/prdownloader/core/DownloadExecutorCore.java" target-dir="src/com/prdownloader/core" />
+      <source-file src="src/android/com/prdownloader/core/DownloadFutureTask.java" target-dir="src/com/prdownloader/core" />
+      <source-file src="src/android/com/prdownloader/core/ExecutorSupplier.java" target-dir="src/com/prdownloader/core" />
+      <source-file src="src/android/com/prdownloader/core/MainThreadExecutorCore.java" target-dir="src/com/prdownloader/core" />
+      <source-file src="src/android/com/prdownloader/core/PriorityThreadFactory.java" target-dir="src/com/prdownloader/core" />
+      <!-- database -->
+      <source-file src="src/android/com/prdownloader/database/AppDbHelper.java" target-dir="src/com/prdownloader/database" />
+      <source-file src="src/android/com/prdownloader/database/DatabaseOpenHelper.java" target-dir="src/com/prdownloader/database" />
+      <source-file src="src/android/com/prdownloader/database/DbHelper.java" target-dir="src/com/prdownloader/database" />
+      <source-file src="src/android/com/prdownloader/database/DownloadModel.java" target-dir="src/com/prdownloader/database" />
+      <source-file src="src/android/com/prdownloader/database/NoOpsDbHelper.java" target-dir="src/com/prdownloader/database" />
+      <!-- handler -->
+      <source-file src="src/android/com/prdownloader/handler/ProgressHandler.java" target-dir="src/com/prdownloader/handler" />
+      <!-- httpclient -->
+      <source-file src="src/android/com/prdownloader/httpclient/DefaultHttpClient.java" target-dir="src/com/prdownloader/httpclient" />
+      <source-file src="src/android/com/prdownloader/httpclient/HttpClient.java" target-dir="src/com/prdownloader/httpclient" />
+      <!-- internal -->
+      <source-file src="src/android/com/prdownloader/internal/ComponentHolder.java" target-dir="src/com/prdownloader/internal" />
+      <source-file src="src/android/com/prdownloader/internal/DownloadRequestQueue.java" target-dir="src/com/prdownloader/internal" />
+      <source-file src="src/android/com/prdownloader/internal/DownloadRunnable.java" target-dir="src/com/prdownloader/internal" />
+      <source-file src="src/android/com/prdownloader/internal/DownloadTask.java" target-dir="src/com/prdownloader/internal" />
+      <!-- request -->
+      <source-file src="src/android/com/prdownloader/request/DownloadRequest.java" target-dir="src/com/prdownloader/request" />
+      <source-file src="src/android/com/prdownloader/request/DownloadRequestBuilder.java" target-dir="src/com/prdownloader/request" />
+      <source-file src="src/android/com/prdownloader/request/RequestBuilder.java" target-dir="src/com/prdownloader/request" />
+      <!-- util -->
+      <source-file src="src/android/com/prdownloader/utils/Utils.java" target-dir="src/com/prdownloader/utils" />
+
+      <source-file src="src/android/com/prdownloader/Constants.java" target-dir="src/com/prdownloader" />
+      <source-file src="src/android/com/prdownloader/Error.java" target-dir="src/com/prdownloader" />
+      <source-file src="src/android/com/prdownloader/OnCancelListener.java" target-dir="src/com/prdownloader" />
+      <source-file src="src/android/com/prdownloader/OnDownloadListener.java" target-dir="src/com/prdownloader" />
+      <source-file src="src/android/com/prdownloader/OnPauseListener.java" target-dir="src/com/prdownloader" />
+      <source-file src="src/android/com/prdownloader/OnProgressListener.java" target-dir="src/com/prdownloader" />
+      <source-file src="src/android/com/prdownloader/OnStartOrResumeListener.java" target-dir="src/com/prdownloader" />
+      <source-file src="src/android/com/prdownloader/PRDownloader.java" target-dir="src/com/prdownloader" />
+      <source-file src="src/android/com/prdownloader/PRDownloaderConfig.java" target-dir="src/com/prdownloader" />
+      <source-file src="src/android/com/prdownloader/Priority.java" target-dir="src/com/prdownloader" />
+      <source-file src="src/android/com/prdownloader/Progress.java" target-dir="src/com/prdownloader" />
+      <source-file src="src/android/com/prdownloader/Response.java" target-dir="src/com/prdownloader" />
+      <source-file src="src/android/com/prdownloader/Status.java" target-dir="src/com/prdownloader" />
+
+      <source-file src="src/android/com/pestilho/PermanentConnection.java" target-dir="src/com/pestilho" />
+    </platform>
+
+    <!-- ios -->
+    <platform name="ios">
+        <js-module src="www/plugin.js" name="plugin">
+            <runs/>
+            <clobbers target="PermanentConnection" />
+        </js-module>
+        <config-file target="config.xml" parent="/*">
+            <feature name="PermanentConnection">
+                <param name="ios-package" value="PermanentConnection" onload="true" />
+            </feature>
+        </config-file>
+
+        <header-file src="src/ios/pestilho/PermanentConnection.h" />
+        <source-file src="src/ios/pestilho/PermanentConnection.m" />
+        <header-file src="src/ios/pestilho/PluginDownloadItem.h" />
+        <source-file src="src/ios/pestilho/PluginDownloadItem.m" />
+        <header-file src="src/ios/pestilho/PluginDownloadItemStatus.h" />
+        <source-file src="src/ios/pestilho/PluginDownloadNotifications.h" />
+        <source-file src="src/ios/pestilho/PluginDownloadNotifications.m" />
+
+        <header-file src="src/ios/HWIFileDownload/HWIFileDownloadProgress.h" />
+        <source-file src="src/ios/HWIFileDownload/HWIFileDownloadProgress.m" />
+        <header-file src="src/ios/HWIFileDownload/HWIBackgroundSessionCompletionHandlerBlock.h" />
+        <header-file src="src/ios/HWIFileDownload/HWIFileDownloadDelegate.h" />
+        <header-file src="src/ios/HWIFileDownload/HWIFileDownloader.h" />
+        <source-file src="src/ios/HWIFileDownload/HWIFileDownloader.m" />
+        <header-file src="src/ios/HWIFileDownload/HWIFileDownloadItem.h" />
+        <source-file src="src/ios/HWIFileDownload/HWIFileDownloadItem.m" />
+    </platform>
+</plugin>
