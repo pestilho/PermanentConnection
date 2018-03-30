@@ -1,4 +1,4 @@
-Cordova Plugin Template
+PermanentConnection
 ======
 
-This is a simple starting point for building a Cordova plugin on iOS and Android.
+Cordova plugin for background file download. Plugin allow you to keep download connection through interrupt events like internet breakdown, app crashes, app background mode etc.
