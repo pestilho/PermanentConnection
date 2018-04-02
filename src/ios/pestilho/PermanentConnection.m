@@ -50,7 +50,16 @@ static void *PluginDownloadStoreProgressObserverContext = &PluginDownloadStorePr
   NSInteger randomID = [ self generateRandomNumber ];
   NSString* urlstring = [command.arguments objectAtIndex:0];
   NSString *filename = [NSString stringWithFormat:@"%d", randomID];
-  
+
+  NSURL *aFileDownloadDirectoryURL = nil;
+  NSArray *aDocumentDirectoryURLsArray = [[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
+  NSURL *aDocumentsDirectoryURL = [aDocumentDirectoryURLsArray firstObject];
+  aFileDownloadDirectoryURL = [aDocumentsDirectoryURL URLByAppendingPathComponent:@"pc-downloads" isDirectory:YES];
+
+  NSString *initresponsestring = [ NSString stringWithFormat: @"{ \"type\" : \"downloadpath\", \"data\" : \"%@\" }", aFileDownloadDirectoryURL.path ];
+  CDVPluginResult *result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:initresponsestring];
+  [ result setKeepCallbackAsBool:YES ];
+  [ self.commandDelegate sendPluginResult:result callbackId:command.callbackId ];
     
   // setup downloader
   if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1)
@@ -72,7 +81,7 @@ static void *PluginDownloadStoreProgressObserverContext = &PluginDownloadStorePr
   [ self startDownloadWithDownloadItem:aPluginDownloadItem ];
 
   NSString *responsestring = [ NSString stringWithFormat: @"{ \"type\" : \"downloadid\", \"data\" : \"%d\" }", randomID ];
-  CDVPluginResult *result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:responsestring];
+  result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:responsestring];
   [ self.commandDelegate sendPluginResult:result callbackId:command.callbackId ];
 }
 
@@ -133,10 +142,6 @@ static void *PluginDownloadStoreProgressObserverContext = &PluginDownloadStorePr
   NSString* downloadid = [command.arguments objectAtIndex:0];
   NSString *aDownloadIdentifier = [NSString stringWithFormat:@"%s", downloadid];
   [ self resumeDownloadWithDownloadIdentifier:aDownloadIdentifier ];
-}
-
-- (void)resumealldownload:(CDVInvokedUrlCommand *)command {
-
 }
 
 - (void)stopalldownload:(CDVInvokedUrlCommand *)command {

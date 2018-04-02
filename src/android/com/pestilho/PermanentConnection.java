@@ -43,6 +43,19 @@ public class PermanentConnection extends CordovaPlugin {
       String folderPathString = this.cordova.getActivity().getFilesDir()+"/pc-downloads";
       Log.d(TAG, "DIRECTORY: "+folderPathString);
 
+      try {
+        JSONObject item = new JSONObject();
+        item.put("type", "downloadpath");
+        item.put("data", folderPathString);
+
+        PluginResult result = new PluginResult(PluginResult.Status.OK, item.toString());
+        result.setKeepCallback(true);
+        callbackContext.sendPluginResult(result);
+     } catch (JSONException e) {
+        Log.d(TAG, e.toString());
+     }
+
+
       int downloadId = PRDownloader.download(urlstring, folderPathString, filename)
                                    .build()
                                    .setOnStartOrResumeListener(new OnStartOrResumeListener() {
@@ -155,20 +168,11 @@ public class PermanentConnection extends CordovaPlugin {
     } 
     else if(action.equals("stopalldownload")) {
       PRDownloader.cancelAll();
-
       return true;
     } 
     else if(action.equals("resumedownload")) {
       String downloadid = args.getString(0);
       PRDownloader.resume(Integer.parseInt(downloadid));
-
-      return true;
-    } 
-    else if(action.equals("resumealldownload")) {
-      for(int i = 0; i < args.length(); i++){  
-        String downloadid = args.getString(i);
-        PRDownloader.resume(Integer.parseInt(downloadid));
-      }
 
       return true;
     }

@@ -1275,6 +1275,7 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)aChallenge
     {
         aFileDownloadDirectoryURL = [aDocumentsDirectoryURL URLByAppendingPathComponent:@"pc-downloads" isDirectory:YES];
         NSLog(@"CAMINHO: %@", aFileDownloadDirectoryURL.path);
+        
         if ([[NSFileManager defaultManager] fileExistsAtPath:aFileDownloadDirectoryURL.path] == NO)
         {
             BOOL aCreateDirectorySuccess = [[NSFileManager defaultManager] createDirectoryAtPath:aFileDownloadDirectoryURL.path withIntermediateDirectories:YES attributes:nil error:&anError];
