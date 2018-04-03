@@ -82,6 +82,7 @@ static void *PluginDownloadStoreProgressObserverContext = &PluginDownloadStorePr
 
   NSString *responsestring = [ NSString stringWithFormat: @"{ \"type\" : \"downloadid\", \"data\" : \"%d\" }", randomID ];
   result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:responsestring];
+  [ result setKeepCallbackAsBool:YES ];
   [ self.commandDelegate sendPluginResult:result callbackId:command.callbackId ];
 }
 
@@ -148,6 +149,61 @@ static void *PluginDownloadStoreProgressObserverContext = &PluginDownloadStorePr
   NSString *responsestring = [ NSString stringWithFormat: @"{ \"type\" : \"downloadallstop\" }" ];
   CDVPluginResult *result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:responsestring];
   [ self.commandDelegate sendPluginResult:result callbackId:command.callbackId ];
+
+  for (int i = 0; i < [command.arguments count]; i++)
+  {
+    NSLog(@"%@", [command.arguments objectAtIndex:i]);
+    NSString* downloadid = [command.arguments objectAtIndex:i];
+    NSString *aDownloadIdentifier = [NSString stringWithFormat:@"%s", downloadid];
+
+    BOOL isDownloading = [self.fileDownloader isDownloadingIdentifier:aDownloadIdentifier];
+    if (isDownloading)
+    {
+        if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1)
+        {
+            HWIFileDownloadProgress *aFileDownloadProgress = [self.fileDownloader downloadProgressForIdentifier:aDownloadIdentifier];
+            [ aFileDownloadProgress.nativeProgress cancel ];
+        }
+        else
+        {
+            [ self.fileDownloader cancelDownloadWithIdentifier:aDownloadIdentifier ];
+        }
+    }
+    else
+    {
+        // app client bookkeeping
+        [self cancelDownloadWithDownloadIdentifier:aDownloadIdentifier];
+        
+        NSUInteger aFoundDownloadItemIndex = [self.downloadItemsArray indexOfObjectPassingTest:^BOOL(PluginDownloadItem *aPluginDownloadItem, NSUInteger anIndex, BOOL *aStopFlag) {
+            if ([aPluginDownloadItem.downloadIdentifier isEqualToString:aDownloadIdentifier])
+            {
+                return YES;
+            }
+            return NO;
+        }];
+        if (aFoundDownloadItemIndex != NSNotFound)
+        {
+            //NSIndexPath *anIndexPath = [NSIndexPath indexPathForRow:aFoundDownloadItemIndex inSection:0];
+            //[self.tableView reloadRowsAtIndexPaths:@[anIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+        }
+    }
+  }
+
+  // deleting all files from the temporary folder
+  [ self.downloadItemsArray removeAllObjects ];
+  //self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
+
+  NSFileManager *fm = [NSFileManager defaultManager];
+  NSString *anOfflineDownloadDirectory = NSTemporaryDirectory();
+  anOfflineDownloadDirectory = [anOfflineDownloadDirectory stringByAppendingPathComponent:@"pc-downloads"];
+  NSError *error = nil;
+
+  for (NSString *file in [fm contentsOfDirectoryAtPath:anOfflineDownloadDirectory error:&error]) {
+    BOOL success = [fm removeItemAtPath:[NSString stringWithFormat:@"%@%@", anOfflineDownloadDirectory, file] error:&error];
+    if (!success || error) {
+        // it failed.
+    }
+  }
 }
 
 -(int)generateRandomNumber{
@@ -465,9 +521,9 @@ static void *PluginDownloadStoreProgressObserverContext = &PluginDownloadStorePr
         NSProgress *aProgress = anObject; // == self.progress
         if ([aKeyPath isEqualToString:@"fractionCompleted"])
         {
-            NSLog(@"%@", aProgress);
+            NSLog(@"ISRAEL %@", aProgress);
             NSLog(@"%.20lf", aProgress.fractionCompleted);
-            NSString *responsestring = [ NSString stringWithFormat: @"{ \"type\" : \"downloadprogress\", \"data\" : { \"progressvalue\" : \"%.20lf\" } }", aProgress.fractionCompleted ];
+            NSString *responsestring = [ NSString stringWithFormat: @"{ \"type\" : \"downloadprogress\", \"data\" : { \"progressvalue\" : \"%.3lf\" } }", aProgress.fractionCompleted ];
 
             CDVPluginResult *result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:responsestring];
             [ result setKeepCallbackAsBool:YES ];

@@ -102,11 +102,17 @@ public class PermanentConnection extends CordovaPlugin {
                                         @Override
                                         public void onProgress(Progress progress) {
                                             Log.d(TAG, "onProgress");
+                                            Log.d(TAG, progress+"");
 
                                             try {
+                                                JSONObject progressobj = new JSONObject();
+                                                double pvalue = ((double) progress.currentBytes / progress.totalBytes) * 100;
+                                                Log.d("DOUBLE", String.valueOf(pvalue));
+                                                progressobj.put("progressvalue", String.valueOf(pvalue));
+
                                                 JSONObject item = new JSONObject();
                                                 item.put("type", "downloadprogress");
-                                                item.put("data", progress);
+                                                item.put("data", progressobj);
 
                                                 PluginResult result = new PluginResult(PluginResult.Status.OK, item.toString());
                                                 result.setKeepCallback(true);
