@@ -43,10 +43,6 @@ var PermanentConnection = {
     exec(cb, null, PLUGIN_NAME, 'pausedownload', [downloadid]);
   },
   resumedownload: function(downloadid, cb) {
-    NativeStorage.getItem("activedownloads", function(successobj){ 
-      PermanentConnection.activedownloads = JSON.parse(successobj);
-    }, function(error){});
-    NativeStorage.getItem("activedownloads", function(successobj){ console.log("ACTIVE "+successobj); }, function(error){});
     exec(cb, null, PLUGIN_NAME, 'resumedownload', [downloadid]);
   },
   stopdownload: function(downloadid, cb) {

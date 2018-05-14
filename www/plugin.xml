@@ -25,6 +25,8 @@
         </feature>
       </config-file>
 
+      <source-file src="src/android/com/pestilho/PermanentConnection.java" target-dir="src/com/pestilho" />
+
       <!-- core -->
       <source-file src="src/android/com/prdownloader/core/Core.java" target-dir="src/com/prdownloader/core" />
       <source-file src="src/android/com/prdownloader/core/DefaultExecutorSupplier.java" target-dir="src/com/prdownloader/core" />
@@ -71,7 +73,6 @@
       <source-file src="src/android/com/prdownloader/Response.java" target-dir="src/com/prdownloader" />
       <source-file src="src/android/com/prdownloader/Status.java" target-dir="src/com/prdownloader" />
 
-      <source-file src="src/android/com/pestilho/PermanentConnection.java" target-dir="src/com/pestilho" />
     </platform>
 
     <!-- ios -->

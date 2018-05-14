@@ -43,6 +43,18 @@ public class PermanentConnection extends CordovaPlugin {
       String folderPathString = this.cordova.getActivity().getFilesDir()+"/pc-downloads";
       Log.d(TAG, "DIRECTORY: "+folderPathString);
 
+      try {
+            JSONObject item = new JSONObject();
+            item.put("type", "downloadpath");
+            item.put("data", folderPathString);
+
+            PluginResult result = new PluginResult(PluginResult.Status.OK, item.toString());
+            result.setKeepCallback(true);
+            callbackContext.sendPluginResult(result);
+      } catch (JSONException e) {
+            Log.d(TAG, e.toString());
+      }
+
       int downloadId = PRDownloader.download(urlstring, folderPathString, filename)
                                    .build()
                                    .setOnStartOrResumeListener(new OnStartOrResumeListener() {
@@ -95,9 +107,9 @@ public class PermanentConnection extends CordovaPlugin {
                                                 item.put("type", "downloadprogress");
                                                 item.put("data", progress);
 
-                                                PluginResult result = new PluginResult(PluginResult.Status.OK, item.toString());
-                                                result.setKeepCallback(true);
-                                                callbackContext.sendPluginResult(result);
+                                                //PluginResult result = new PluginResult(PluginResult.Status.OK, item.toString());
+                                                //result.setKeepCallback(true);
+                                                //callbackContext.sendPluginResult(result);
                                             } catch (JSONException e) {
                                                 Log.d(TAG, e.toString());
                                             }
@@ -112,9 +124,9 @@ public class PermanentConnection extends CordovaPlugin {
                                                 item.put("type", "downloadcomplete");
                                                 item.put("data", auxDownloadID);
 
-                                                PluginResult result = new PluginResult(PluginResult.Status.OK, item.toString());
-                                                result.setKeepCallback(true);
-                                                callbackContext.sendPluginResult(result);
+                                                //PluginResult result = new PluginResult(PluginResult.Status.OK, item.toString());
+                                                //result.setKeepCallback(true);
+                                                //callbackContext.sendPluginResult(result);
                                             } catch (JSONException e) {
                                                 Log.d(TAG, e.toString());
                                             }
