@@ -37,7 +37,7 @@ var PermanentConnection = {
     exec(customCallback, null, PLUGIN_NAME, 'startdownload', [url]);
   },
   getdownloadprogress: function(oedid){
-    return oedidmanager[returnObj.data+''];
+    return this.oedidmanager[oedid+''];
   },
   pausedownload: function(downloadid, cb) {
     NativeStorage.getItem("activedownloads", function(successobj){ 
