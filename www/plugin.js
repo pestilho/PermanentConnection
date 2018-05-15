@@ -6,6 +6,7 @@ var PLUGIN_NAME = 'PermanentConnection';
 var PermanentConnection = {
   path : "",
   activedownloads : [],
+  oedidmanager : {},
   startdownload: function(url, cb) {
     function customCallback(returndata){
       console.log("Pestilho: "+returndata);
@@ -34,6 +35,9 @@ var PermanentConnection = {
     
     NativeStorage.getItem("activedownloads", function(successobj){ console.log("ACTIVE "+successobj); }, function(error){});
     exec(customCallback, null, PLUGIN_NAME, 'startdownload', [url]);
+  },
+  getdownloadprogress: function(oedid){
+    return oedidmanager[returnObj.data+''];
   },
   pausedownload: function(downloadid, cb) {
     NativeStorage.getItem("activedownloads", function(successobj){ 
